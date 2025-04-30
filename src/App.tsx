@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Budget from "./pages/Budget";
 import Settings from "./pages/Settings";
+import Insights from "./pages/Insights";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +60,14 @@ const App = () => (
             element={
               <AppLayout>
                 <Budget />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/insights"
+            element={
+              <AppLayout>
+                <Insights />
               </AppLayout>
             }
           />
