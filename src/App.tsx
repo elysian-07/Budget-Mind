@@ -14,6 +14,7 @@ import Budget from "./pages/Budget";
 import Settings from "./pages/Settings";
 import Insights from "./pages/Insights";
 import Goals from "./pages/Goals";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,14 @@ const App = () => (
             element={
               <AppLayout>
                 <Goals />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <AppLayout>
+                <Analytics />
               </AppLayout>
             }
           />
