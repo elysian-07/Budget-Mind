@@ -13,6 +13,7 @@ import Transactions from "./pages/Transactions";
 import Budget from "./pages/Budget";
 import Settings from "./pages/Settings";
 import Insights from "./pages/Insights";
+import Goals from "./pages/Goals";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -68,6 +69,14 @@ const App = () => (
             element={
               <AppLayout>
                 <Insights />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/goals"
+            element={
+              <AppLayout>
+                <Goals />
               </AppLayout>
             }
           />
