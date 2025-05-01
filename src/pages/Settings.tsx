@@ -18,13 +18,14 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Settings() {
   const { toast } = useToast();
+  const { theme, toggleTheme } = useTheme();
   const [name, setName] = useState("John Doe");
   const [email, setEmail] = useState("john.doe@example.com");
-  const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [exportTypes, setExportTypes] = useState({
@@ -41,10 +42,10 @@ export default function Settings() {
   };
 
   const handleToggleTheme = () => {
-    setDarkMode(!darkMode);
+    toggleTheme();
     toast({
       title: "Theme Changed",
-      description: `Theme switched to ${!darkMode ? "dark" : "light"} mode.`,
+      description: `Theme switched to ${theme === 'light' ? "dark" : "light"} mode.`,
     });
   };
 
@@ -103,15 +104,19 @@ export default function Settings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="dark-mode">Dark Mode</Label>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Switch between light and dark theme
                 </p>
               </div>
-              <Switch
-                id="dark-mode"
-                checked={darkMode}
-                onCheckedChange={handleToggleTheme}
-              />
+              <div className="flex items-center gap-2">
+                <Sun className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                <Switch
+                  id="dark-mode"
+                  checked={theme === "dark"}
+                  onCheckedChange={handleToggleTheme}
+                />
+                <Moon className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -128,7 +133,7 @@ export default function Settings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label htmlFor="notifications">Enable Notifications</Label>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Get notified about important events
                 </p>
               </div>
