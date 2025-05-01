@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, User, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -12,11 +12,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useTheme } from "@/context/ThemeContext";
 
 export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const notifications = [
+    { id: 1, message: "Budget for Food is almost reached", time: "Just now" },
+    { id: 2, message: "New feature: Currency settings available!", time: "2 hours ago" },
+    { id: 3, message: "Welcome to Finance App", time: "1 day ago" },
+  ];
 
   return (
     <header className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 py-3 px-6 flex items-center justify-between">
@@ -36,10 +50,29 @@ export function Header() {
       </div>
       
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-        </Button>
+        <Popover open={showNotifications} onOpenChange={setShowNotifications}>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              {notifications.length > 0 && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-0" align="end">
+            <div className="bg-finance-primary text-white p-4 rounded-t-md">
+              <h3 className="font-medium">Notifications</h3>
+            </div>
+            <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-72 overflow-auto">
+              {notifications.map((notification) => (
+                <div key={notification.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{notification.message}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{notification.time}</p>
+                </div>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
         
         {user ? (
           <DropdownMenu>
@@ -47,7 +80,7 @@ export function Header() {
               <div className="flex items-center space-x-3 cursor-pointer">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.profileImage} />
-                  <AvatarFallback className="bg-finance-primary text-white">
+                  <AvatarFallback className={`${theme === 'dark' ? 'bg-finance-secondary' : 'bg-finance-primary'} text-white`}>
                     {user.name.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -57,13 +90,20 @@ export function Header() {
                 </div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigate('/settings')}>
-                Profile Settings
+            <DropdownMenuContent align="end" className="w-56 p-1">
+              <DropdownMenuItem 
+                onClick={() => navigate('/settings')}
+                className="flex items-center cursor-pointer px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                <span>Profile Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>
-                Log Out
+              <DropdownMenuItem 
+                onClick={logout}
+                className="flex items-center cursor-pointer px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 text-red-500 dark:text-red-400 rounded-md"
+              >
+                <span>Log Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -71,7 +111,7 @@ export function Header() {
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-finance-primary text-white hover:bg-finance-secondary border-none"
             onClick={() => navigate('/login')}
           >
             <User className="h-4 w-4" />

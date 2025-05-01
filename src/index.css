@@ -88,14 +88,53 @@
 
 @layer components {
   .stat-card {
-    @apply rounded-xl p-4 bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg;
+    @apply rounded-xl p-4 bg-white shadow-md border border-gray-100 transition-all hover:shadow-lg dark:bg-gray-800 dark:border-gray-700;
   }
 
   .finance-card {
-    @apply bg-white rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md;
+    @apply bg-white rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md dark:bg-gray-800 dark:border-gray-700;
   }
   
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-primary;
   }
+
+  .card-hover-effect {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900;
+  }
+
+  .card-gradient-accent {
+    @apply bg-gradient-to-br from-finance-purple/30 to-finance-purple/5 dark:from-finance-purple/20 dark:to-transparent;
+  }
+
+  .button-gradient {
+    @apply bg-gradient-to-r from-finance-primary to-finance-secondary hover:opacity-90 transition-opacity;
+  }
+
+  .input-focus-ring {
+    @apply focus:ring-2 focus:ring-finance-primary/30 focus:border-finance-primary transition-all;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
 }
