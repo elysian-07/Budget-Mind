@@ -28,6 +28,9 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 function TransactionItem({ transaction }: { transaction: Transaction }) {
+  const { state } = useFinance();
+  const currencySymbol = state.currency.symbol;
+  
   return (
     <div className="flex items-center py-3 border-b last:border-0">
       <div className="p-2 rounded-full bg-gray-100 mr-4">
@@ -44,7 +47,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           ? 'text-finance-income'
           : 'text-finance-expense'
       }`}>
-        {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+        {transaction.type === 'income' ? '+' : '-'}{currencySymbol}{transaction.amount.toFixed(2)}
       </div>
     </div>
   );
