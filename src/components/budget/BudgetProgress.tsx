@@ -50,6 +50,7 @@ interface BudgetProgressProps {
 
 export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
   const { state } = useFinance();
+  const currencySymbol = state.currency.symbol;
   
   const budgetData = useMemo(() => {
     const currentDate = new Date();
@@ -113,7 +114,7 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
                     <span className="capitalize text-sm font-medium">{item.category}</span>
                   </div>
                   <div className="text-sm font-medium">
-                    ${item.spent.toFixed(2)} / ${item.budgeted.toFixed(2)}
+                    {currencySymbol}{item.spent.toFixed(2)} / {currencySymbol}{item.budgeted.toFixed(2)}
                   </div>
                 </div>
                 

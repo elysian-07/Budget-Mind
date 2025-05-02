@@ -217,7 +217,7 @@ export function TransactionList() {
                     <td className={`px-4 py-3 whitespace-nowrap text-sm text-right font-medium ${
                       transaction.type === 'income' ? 'text-finance-income' : 'text-finance-expense'
                     }`}>
-                      {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                      {transaction.type === 'income' ? '+' : '-'}{state.currency.symbol}{transaction.amount.toFixed(2)}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap text-sm text-right">
                       <div className="flex justify-end space-x-2">

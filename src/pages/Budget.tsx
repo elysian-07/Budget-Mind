@@ -143,7 +143,7 @@ export default function Budget() {
                           </span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-right font-medium">
-                          ${budget.amount.toFixed(2)}
+                          {state.currency.symbol}{budget.amount.toFixed(2)}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-right">
                           <Button
