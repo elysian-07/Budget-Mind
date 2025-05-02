@@ -1,18 +1,23 @@
-# Welcome to your Lovable project
+# Welcome to my AI- Based Expance Tracker
 
 ## Project info
+This is a modern AI-powered PDF summarizer web application built entirely in Visual Studio Code. It uses React, TypeScript, Vite, Tailwind CSS, and shadcn/ui to deliver a fast, responsive, and elegant user experience. Although hosted on Lovable for easy deployment, all development, coding, and customization were done independently by me in VS Code.
 
-**URL**: https://lovable.dev/projects/b2c589ac-296b-493d-a3ab-d50c5b882d36
+##Tech Stack
+This project is built with:
 
-## How can I edit this code?
+Vite
 
-There are several ways of editing your application.
+TypeScript
 
-**Use Lovable**
+React
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b2c589ac-296b-493d-a3ab-d50c5b882d36) and start prompting.
+Tailwind CSS
 
-Changes made via Lovable will be committed automatically to this repo.
+shadcn/ui
+
+# Requirements
+Node.js & npm 
 
 **Use your preferred IDE**
 
@@ -20,7 +25,7 @@ If you want to work locally using your own IDE, you can clone this repo and push
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
+##Follow these steps:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
@@ -60,14 +65,6 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/b2c589ac-296b-493d-a3ab-d50c5b882d36) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
 
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
