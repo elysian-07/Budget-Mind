@@ -29,7 +29,7 @@ export function DashboardHeader() {
     return "Good Evening";
   }, []);
 
-  const userName = user?.name || "There";
+  const userName = user?.name || "User";
 
   return (
     <div className="mb-8">

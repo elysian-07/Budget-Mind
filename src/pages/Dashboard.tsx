@@ -3,10 +3,13 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { AccountSummary } from "@/components/dashboard/AccountSummary";
 import { RecentTransactions } from "@/components/dashboard/RecentTransactions";
 import { SpendingChart } from "@/components/dashboard/SpendingChart";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Dashboard() {
+  const { theme } = useTheme();
+  
   return (
-    <div className="container py-6">
+    <div className={`container py-6 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
       <DashboardHeader />
       
       <AccountSummary />

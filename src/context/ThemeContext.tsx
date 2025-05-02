@@ -39,12 +39,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         root.style.setProperty('--sidebar-primary', '252 80% 65%');
         root.style.setProperty('--sidebar-accent', '252 30% 25%');
         root.style.setProperty('--sidebar-border', '252 30% 20%');
+        
+        // Additional dark theme colors
+        root.style.setProperty('--card-bg', '240 17% 14%');
+        root.style.setProperty('--card-border', '240 17% 20%');
+        root.style.setProperty('--hover-bg', '240 17% 18%');
+        root.style.setProperty('--button-hover', '252 75% 55%');
       } else {
         root.style.setProperty('--sidebar-background', '252 80% 98%');
         root.style.setProperty('--sidebar-foreground', '252 80% 30%');
         root.style.setProperty('--sidebar-primary', '252 80% 75%');
         root.style.setProperty('--sidebar-accent', '252 82% 95%');
         root.style.setProperty('--sidebar-border', '252 80% 90%');
+        
+        // Additional light theme colors
+        root.style.setProperty('--card-bg', '0 0% 100%');
+        root.style.setProperty('--card-border', '220 13% 95%');
+        root.style.setProperty('--hover-bg', '220 13% 97%');
+        root.style.setProperty('--button-hover', '252 75% 70%');
       }
     };
 

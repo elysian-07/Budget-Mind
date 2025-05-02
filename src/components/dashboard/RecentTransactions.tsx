@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { ShoppingBag, Coffee, Car, Home, Film, Music, Heart, Laptop, Zap, GraduationCap, Plane, Gift } from "lucide-react";
 import { useMemo } from "react";
+import { useTheme } from "@/context/ThemeContext";
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -29,16 +30,17 @@ const categoryIcons: Record<string, React.ReactNode> = {
 
 function TransactionItem({ transaction }: { transaction: Transaction }) {
   const { state } = useFinance();
+  const { theme } = useTheme();
   const currencySymbol = state.currency.symbol;
   
   return (
-    <div className="flex items-center py-3 border-b last:border-0">
-      <div className="p-2 rounded-full bg-gray-100 mr-4">
+    <div className={`flex items-center py-3 border-b last:border-0 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+      <div className={`p-2 rounded-full ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} mr-4`}>
         {categoryIcons[transaction.category]}
       </div>
       
       <div className="flex-1">
-        <div className="font-medium text-sm">{transaction.description}</div>
+        <div className={`font-medium text-sm ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>{transaction.description}</div>
         <div className="text-xs text-gray-500">{new Date(transaction.date).toLocaleDateString()}</div>
       </div>
       
@@ -55,6 +57,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
 
 export function RecentTransactions() {
   const { state } = useFinance();
+  const { theme } = useTheme();
   
   const recentTransactions = useMemo(() => {
     return [...state.transactions]
@@ -65,8 +68,8 @@ export function RecentTransactions() {
   }, [state.transactions]);
   
   return (
-    <Card>
-      <CardHeader>
+    <Card className={`theme-card`}>
+      <CardHeader className={theme === 'dark' ? 'border-b border-gray-800' : ''}>
         <CardTitle className="text-xl">Recent Transactions</CardTitle>
         <CardDescription>Your latest 5 transactions</CardDescription>
       </CardHeader>
@@ -81,7 +84,7 @@ export function RecentTransactions() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
+          <div className={`text-center py-8 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
             No recent transactions found
           </div>
         )}

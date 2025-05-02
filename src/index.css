@@ -43,6 +43,11 @@
     --sidebar-accent-foreground: 252 80% 30%;
     --sidebar-border: 252 80% 90%;
     --sidebar-ring: 252 80% 75%;
+    
+    --card-bg: 0 0% 100%;
+    --card-border: 220 13% 95%;
+    --hover-bg: 220 13% 97%;
+    --button-hover: 252 75% 70%;
   }
 
   .dark {
@@ -82,6 +87,11 @@
     --sidebar-accent-foreground: 252 80% 75%;
     --sidebar-border: 252 30% 20%;
     --sidebar-ring: 252 80% 65%;
+    
+    --card-bg: 240 17% 14%;
+    --card-border: 240 17% 20%;
+    --hover-bg: 240 17% 18%;
+    --button-hover: 252 75% 55%;
   }
 }
 
@@ -138,6 +148,18 @@
   
   .colorful-card-3 {
     @apply bg-gradient-to-r from-finance-green/20 to-finance-yellow/10 dark:from-finance-green/10 dark:to-finance-yellow/5;
+  }
+  
+  .theme-card {
+    @apply bg-[hsl(var(--card-bg))] border-[hsl(var(--card-border))] border;
+  }
+  
+  .theme-hover {
+    @apply hover:bg-[hsl(var(--hover-bg))];
+  }
+  
+  .theme-button-hover {
+    @apply hover:bg-[hsl(var(--button-hover))];
   }
 }
 
