@@ -1,4 +1,3 @@
-
 import { useState, useMemo } from "react";
 import { useFinance, Transaction } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { TransactionForm } from "./TransactionForm";
+import { useTheme } from "@/context/ThemeContext";
 import {
   ShoppingBag,
   Coffee,
@@ -50,6 +50,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
 export function TransactionList() {
   const { state, deleteTransaction } = useFinance();
   const { toast } = useToast();
+  const { theme } = useTheme();
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -110,8 +111,8 @@ export function TransactionList() {
   };
   
   return (
-    <Card>
-      <CardHeader>
+    <Card className="theme-card">
+      <CardHeader className={theme === 'dark' ? 'border-b border-gray-800' : ''}>
         <CardTitle className="text-xl">All Transactions</CardTitle>
       </CardHeader>
       <CardContent>
@@ -176,42 +177,44 @@ export function TransactionList() {
         {sortedAndFilteredTransactions.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className={theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}>
                 <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className={`px-4 py-2 text-left text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider`}>
                     Date
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className={`px-4 py-2 text-left text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider`}>
                     Description
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className={`px-4 py-2 text-left text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider`}>
                     Category
                   </th>
-                  <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className={`px-4 py-2 text-right text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider`}>
                     Amount
                   </th>
-                  <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className={`px-4 py-2 text-right text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} uppercase tracking-wider`}>
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 bg-white">
+              <tbody className={`divide-y ${theme === 'dark' ? 'divide-gray-700 bg-gray-900' : 'divide-gray-200 bg-white'}`}>
                 {sortedAndFilteredTransactions.map((transaction) => (
-                  <tr key={transaction.id}>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                  <tr key={transaction.id} className={theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-50'}>
+                    <td className={`px-4 py-3 whitespace-nowrap text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                       {new Date(transaction.date).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 text-sm">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 mr-2">
-                          <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                          <div className={`w-8 h-8 rounded-full ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} flex items-center justify-center`}>
                             {categoryIcons[transaction.category]}
                           </div>
                         </div>
-                        <span className="truncate max-w-[200px]">{transaction.description}</span>
+                        <span className={`truncate max-w-[200px] ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+                          {transaction.description}
+                        </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 capitalize">
+                    <td className={`px-4 py-3 whitespace-nowrap text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'} capitalize`}>
                       {transaction.category}
                     </td>
                     <td className={`px-4 py-3 whitespace-nowrap text-sm text-right font-medium ${
@@ -241,14 +244,14 @@ export function TransactionList() {
             </table>
           </div>
         ) : (
-          <div className="text-center py-10 text-gray-500">
+          <div className={`text-center py-10 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
             No transactions found with the selected filter.
           </div>
         )}
         
         {/* Edit Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className={`max-w-md ${theme === 'dark' ? 'theme-card' : ''}`}>
             <DialogHeader>
               <DialogTitle>Edit Transaction</DialogTitle>
             </DialogHeader>
@@ -263,15 +266,15 @@ export function TransactionList() {
         
         {/* Delete Confirmation Dialog */}
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent className="max-w-md">
+          <DialogContent className={`max-w-md ${theme === 'dark' ? 'theme-card' : ''}`}>
             <DialogHeader>
               <DialogTitle>Confirm Deletion</DialogTitle>
             </DialogHeader>
             <div className="py-4">
-              <p>Are you sure you want to delete this transaction?</p>
-              <p className="mt-2 text-sm text-gray-500">
+              <p className={theme === 'dark' ? 'text-gray-200' : ''}>Are you sure you want to delete this transaction?</p>
+              <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                 <strong>Description:</strong> {selectedTransaction?.description}<br />
-                <strong>Amount:</strong> ${selectedTransaction?.amount.toFixed(2)}
+                <strong>Amount:</strong> {state.currency.symbol}{selectedTransaction?.amount.toFixed(2)}
               </p>
             </div>
             <div className="flex justify-end space-x-2">

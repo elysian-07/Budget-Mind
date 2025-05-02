@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { predictCategory } from "@/services/aiService";
+import { useTheme } from "@/context/ThemeContext";
 
 const categoryOptions: Category[] = [
   'food',
@@ -28,8 +29,9 @@ type TransactionFormProps = {
 };
 
 export function TransactionForm({ editTransaction, onSave }: TransactionFormProps) {
-  const { addTransaction, updateTransaction } = useFinance();
+  const { addTransaction, updateTransaction, state } = useFinance();
   const { toast } = useToast();
+  const { theme } = useTheme();
   
   const [amount, setAmount] = useState(editTransaction?.amount.toString() || '');
   const [description, setDescription] = useState(editTransaction?.description || '');
@@ -108,47 +110,55 @@ export function TransactionForm({ editTransaction, onSave }: TransactionFormProp
       setCategory(predictedCategory);
     }
   };
+
+  const inputClasses = `w-full p-2 rounded-md ${
+    theme === 'dark' 
+      ? 'bg-gray-800 border-gray-700 text-gray-200 focus:border-finance-primary' 
+      : 'border-gray-300'
+  }`;
   
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{editTransaction ? 'Edit Transaction' : 'Add New Transaction'}</CardTitle>
+    <Card className={theme === 'dark' ? 'bg-gray-900 border-gray-800' : ''}>
+      <CardHeader className={theme === 'dark' ? 'border-b border-gray-800' : ''}>
+        <CardTitle className={theme === 'dark' ? 'text-gray-200' : ''}>
+          {editTransaction ? 'Edit Transaction' : 'Add New Transaction'}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Amount</label>
+              <label className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : ''}`}>Amount</label>
               <input
                 type="number"
                 step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className={inputClasses}
                 placeholder="0.00"
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium">Date</label>
+              <label className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : ''}`}>Date</label>
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className={inputClasses}
                 required
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Description</label>
+            <label className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : ''}`}>Description</label>
             <input
               type="text"
               value={description}
               onChange={handleDescriptionChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className={inputClasses}
               placeholder="e.g., Grocery shopping at Walmart"
               required
             />
@@ -156,21 +166,21 @@ export function TransactionForm({ editTransaction, onSave }: TransactionFormProp
           
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium">Category</label>
+              <label className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : ''}`}>Category</label>
               <div className="flex items-center space-x-2">
-                <label className="text-xs text-gray-500">AI Categorization</label>
+                <label className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>AI Categorization</label>
                 <input
                   type="checkbox"
                   checked={isAIEnabled}
                   onChange={(e) => setIsAIEnabled(e.target.checked)}
-                  className="rounded text-finance-primary focus:ring-finance-primary"
+                  className={`rounded ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : ''} text-finance-primary focus:ring-finance-primary`}
                 />
               </div>
             </div>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as Category)}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className={inputClasses}
               required
             >
               {categoryOptions.map((option) => (
@@ -182,25 +192,25 @@ export function TransactionForm({ editTransaction, onSave }: TransactionFormProp
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm font-medium">Type</label>
+            <label className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : ''}`}>Type</label>
             <div className="flex space-x-4">
-              <label className="inline-flex items-center">
+              <label className={`inline-flex items-center ${theme === 'dark' ? 'text-gray-300' : ''}`}>
                 <input
                   type="radio"
                   value="expense"
                   checked={type === 'expense'}
                   onChange={() => setType('expense')}
-                  className="text-finance-primary focus:ring-finance-primary"
+                  className={`${theme === 'dark' ? 'bg-gray-700 border-gray-600' : ''} text-finance-primary focus:ring-finance-primary`}
                 />
                 <span className="ml-2">Expense</span>
               </label>
-              <label className="inline-flex items-center">
+              <label className={`inline-flex items-center ${theme === 'dark' ? 'text-gray-300' : ''}`}>
                 <input
                   type="radio"
                   value="income"
                   checked={type === 'income'}
                   onChange={() => setType('income')}
-                  className="text-finance-primary focus:ring-finance-primary"
+                  className={`${theme === 'dark' ? 'bg-gray-700 border-gray-600' : ''} text-finance-primary focus:ring-finance-primary`}
                 />
                 <span className="ml-2">Income</span>
               </label>
@@ -208,7 +218,11 @@ export function TransactionForm({ editTransaction, onSave }: TransactionFormProp
           </div>
           
           <div className="flex justify-end">
-            <Button type="submit" className="bg-finance-primary hover:bg-finance-secondary">
+            <Button 
+              type="submit" 
+              style={{ backgroundColor: "rgb(137 84 238)" }}
+              className="hover:opacity-90"
+            >
               {editTransaction ? 'Update' : 'Add Transaction'}
             </Button>
           </div>

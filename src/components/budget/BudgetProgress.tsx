@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import { useFinance, Category } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +18,7 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/context/ThemeContext";
 
 // Icon mapping for categories
 const categoryIcons: Record<string, React.ReactNode> = {
@@ -50,6 +50,7 @@ interface BudgetProgressProps {
 
 export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
   const { state } = useFinance();
+  const { theme } = useTheme();
   const currencySymbol = state.currency.symbol;
   
   const budgetData = useMemo(() => {
@@ -90,14 +91,17 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
     return budgetItems.sort((a, b) => b.percentage - a.percentage);
   }, [state.transactions, state.budgets]);
   
+  const budgetMindColor = "rgb(137 84 238)";
+  
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card className="theme-card">
+      <CardHeader className={`flex flex-row items-center justify-between ${theme === 'dark' ? 'border-b border-gray-800' : ''}`}>
         <CardTitle className="text-xl">Budget Progress</CardTitle>
         <Button
           size="sm"
           onClick={onAddBudget}
-          className="bg-finance-primary hover:bg-finance-secondary"
+          style={{ backgroundColor: budgetMindColor }}
+          className="hover:opacity-90"
         >
           <PlusCircle className="h-4 w-4 mr-2" />
           Add Budget
@@ -111,9 +115,11 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="mr-2">{categoryIcons[item.category]}</div>
-                    <span className="capitalize text-sm font-medium">{item.category}</span>
+                    <span className={`capitalize text-sm font-medium ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {item.category}
+                    </span>
                   </div>
-                  <div className="text-sm font-medium">
+                  <div className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
                     {currencySymbol}{item.spent.toFixed(2)} / {currencySymbol}{item.budgeted.toFixed(2)}
                   </div>
                 </div>
@@ -122,16 +128,26 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
                   <Progress 
                     value={item.percentage} 
                     className={`h-2 ${
-                      item.percentage >= 100 ? 'bg-red-200' : 
-                      item.percentage >= 80 ? 'bg-yellow-200' : 
-                      'bg-gray-200'
+                      item.percentage >= 100 
+                        ? theme === 'dark' ? 'bg-red-900' : 'bg-red-200' 
+                        : item.percentage >= 80 
+                          ? theme === 'dark' ? 'bg-yellow-900' : 'bg-yellow-200'
+                          : theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
                     }`}
+                    style={{
+                      backgroundImage: 
+                        item.percentage > 0 
+                          ? `linear-gradient(to right, ${budgetMindColor} ${item.percentage}%, transparent 0%)` 
+                          : 'none'
+                    }}
                   />
                   <div 
                     className={`absolute right-0 top-0 text-xs ${
-                      item.percentage >= 100 ? 'text-red-600' : 
-                      item.percentage >= 80 ? 'text-yellow-600' : 
-                      'text-gray-600'
+                      item.percentage >= 100 
+                        ? theme === 'dark' ? 'text-red-400' : 'text-red-600'
+                        : item.percentage >= 80 
+                          ? theme === 'dark' ? 'text-yellow-400' : 'text-yellow-600'
+                          : theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
                     }`}
                   >
                     {item.percentage}%
@@ -141,7 +157,7 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
             ))}
           </div>
         ) : (
-          <div className="text-center py-10 text-gray-500">
+          <div className={`text-center py-10 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
             No budgets set up yet. Click the "Add Budget" button to get started.
           </div>
         )}
