@@ -34,6 +34,11 @@ type FinanceState = {
   transactions: Transaction[];
   budgets: Budget[];
   loading: boolean;
+  currency: {
+    code: string;
+    symbol: string;
+    name: string;
+  };
 };
 
 type FinanceAction = 
@@ -44,12 +49,18 @@ type FinanceAction =
   | { type: 'SET_BUDGETS'; payload: Budget[] }
   | { type: 'ADD_BUDGET'; payload: Budget }
   | { type: 'UPDATE_BUDGET'; payload: Budget }
-  | { type: 'DELETE_BUDGET'; payload: Category };
+  | { type: 'DELETE_BUDGET'; payload: Category }
+  | { type: 'SET_CURRENCY'; payload: { code: string; symbol: string; name: string } };
 
 const initialState: FinanceState = {
   transactions: [],
   budgets: [],
   loading: true,
+  currency: {
+    code: 'USD',
+    symbol: '$',
+    name: 'US Dollar'
+  }
 };
 
 // Example data for demonstration
@@ -150,6 +161,11 @@ function financeReducer(state: FinanceState, action: FinanceAction): FinanceStat
         ...state,
         budgets: state.budgets.filter((b) => b.category !== action.payload),
       };
+    case 'SET_CURRENCY':
+      return {
+        ...state,
+        currency: action.payload,
+      };
     default:
       return state;
   }
@@ -163,6 +179,7 @@ type FinanceContextType = {
   addBudget: (budget: Budget) => void;
   updateBudget: (budget: Budget) => void;
   deleteBudget: (category: Category) => void;
+  setCurrency: (currency: { code: string; symbol: string; name: string }) => void;
 };
 
 const FinanceContext = createContext<FinanceContextType | undefined>(undefined);
@@ -174,6 +191,8 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     // Load data from localStorage or use demo data
     const savedTransactions = localStorage.getItem('transactions');
     const savedBudgets = localStorage.getItem('budgets');
+    const savedCurrency = localStorage.getItem('preferred-currency');
+    const currencyDetails = localStorage.getItem('currency-details');
 
     if (savedTransactions) {
       dispatch({ type: 'SET_TRANSACTIONS', payload: JSON.parse(savedTransactions) });
@@ -187,6 +206,10 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     } else {
       dispatch({ type: 'SET_BUDGETS', payload: demoBudgets });
     }
+
+    if (savedCurrency && currencyDetails) {
+      dispatch({ type: 'SET_CURRENCY', payload: JSON.parse(currencyDetails) });
+    }
   }, []);
 
   // Save to localStorage when state changes
@@ -194,8 +217,10 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     if (!state.loading) {
       localStorage.setItem('transactions', JSON.stringify(state.transactions));
       localStorage.setItem('budgets', JSON.stringify(state.budgets));
+      localStorage.setItem('preferred-currency', state.currency.code);
+      localStorage.setItem('currency-details', JSON.stringify(state.currency));
     }
-  }, [state.transactions, state.budgets, state.loading]);
+  }, [state.transactions, state.budgets, state.currency, state.loading]);
 
   // Generate a unique ID
   const generateId = () => {
@@ -230,6 +255,10 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'DELETE_BUDGET', payload: category });
   };
 
+  const setCurrency = (currency: { code: string; symbol: string; name: string }) => {
+    dispatch({ type: 'SET_CURRENCY', payload: currency });
+  };
+
   return (
     <FinanceContext.Provider
       value={{
@@ -240,6 +269,7 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
         addBudget,
         updateBudget,
         deleteBudget,
+        setCurrency,
       }}
     >
       {children}

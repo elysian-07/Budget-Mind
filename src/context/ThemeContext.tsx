@@ -30,6 +30,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const root = window.document.documentElement;
     root.classList.remove("dark", "light");
     root.classList.add(theme);
+
+    // Additional theme-specific styling
+    const updateThemeColors = () => {
+      if (theme === "dark") {
+        root.style.setProperty('--sidebar-background', '252 50% 15%');
+        root.style.setProperty('--sidebar-foreground', '252 80% 75%');
+        root.style.setProperty('--sidebar-primary', '252 80% 65%');
+        root.style.setProperty('--sidebar-accent', '252 30% 25%');
+        root.style.setProperty('--sidebar-border', '252 30% 20%');
+      } else {
+        root.style.setProperty('--sidebar-background', '252 80% 98%');
+        root.style.setProperty('--sidebar-foreground', '252 80% 30%');
+        root.style.setProperty('--sidebar-primary', '252 80% 75%');
+        root.style.setProperty('--sidebar-accent', '252 82% 95%');
+        root.style.setProperty('--sidebar-border', '252 80% 90%');
+      }
+    };
+
+    updateThemeColors();
   }, [theme]);
 
   const toggleTheme = () => {

@@ -73,6 +73,15 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 252 80% 75%;
+    
+    --sidebar-background: 252 50% 15%;
+    --sidebar-foreground: 252 80% 75%;
+    --sidebar-primary: 252 80% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 252 30% 25%;
+    --sidebar-accent-foreground: 252 80% 75%;
+    --sidebar-border: 252 30% 20%;
+    --sidebar-ring: 252 80% 65%;
   }
 }
 
@@ -92,7 +101,7 @@
   }
 
   .finance-card {
-    @apply bg-white rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md dark:bg-gray-800 dark:border-gray-700;
+    @apply bg-gradient-to-br from-white to-gray-50 rounded-xl border border-gray-100 shadow-sm transition-all hover:shadow-md dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 dark:border-gray-700;
   }
   
   .gradient-text {
@@ -118,8 +127,21 @@
   .input-focus-ring {
     @apply focus:ring-2 focus:ring-finance-primary/30 focus:border-finance-primary transition-all;
   }
+  
+  .colorful-card-1 {
+    @apply bg-gradient-to-r from-finance-primary/20 to-finance-secondary/10 dark:from-finance-primary/10 dark:to-finance-secondary/5;
+  }
+  
+  .colorful-card-2 {
+    @apply bg-gradient-to-r from-finance-purple/20 to-finance-pink/10 dark:from-finance-purple/10 dark:to-finance-pink/5;
+  }
+  
+  .colorful-card-3 {
+    @apply bg-gradient-to-r from-finance-green/20 to-finance-yellow/10 dark:from-finance-green/10 dark:to-finance-yellow/5;
+  }
 }
 
+/* Animation effects */
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -137,4 +159,24 @@
 
 .animate-pulse-soft {
   animation: pulse-soft 3s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Enhanced card styles */
+.glass-card {
+  @apply backdrop-blur-md bg-white/80 dark:bg-gray-800/80 border border-white/20 dark:border-gray-700/20 shadow-xl;
+}
+
+.frosted-card {
+  @apply backdrop-blur-sm bg-white/70 dark:bg-gray-800/70 border border-white/30 dark:border-gray-700/30;
 }
