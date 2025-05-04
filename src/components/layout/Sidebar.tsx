@@ -40,8 +40,8 @@ export function Sidebar() {
       <div className="flex items-center justify-between p-4">
         {!collapsed && (
           <div className="flex items-center">
-            <PieChart className="h-6 w-6 text-finance-primary" />
-            <span className="ml-2 font-bold text-lg text-gray-800">BudgetMind</span>
+            <PieChart className="h-6 w-6 text-[#7B5EED]" />
+            <span className="ml-2 font-bold text-lg text-[#7B5EED]">BudgetMind</span>
           </div>
         )}
         <Button
