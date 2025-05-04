@@ -1,3 +1,4 @@
+
 import { useMemo } from "react";
 import { useFinance, Category } from "@/context/FinanceContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -91,6 +92,7 @@ export function BudgetProgress({ onAddBudget }: BudgetProgressProps) {
     return budgetItems.sort((a, b) => b.percentage - a.percentage);
   }, [state.transactions, state.budgets]);
   
+  // BudgetMind color as requested
   const budgetMindColor = "rgb(137 84 238)";
   
   return (

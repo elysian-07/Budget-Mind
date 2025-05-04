@@ -16,6 +16,7 @@ export default function Transactions() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const { theme } = useTheme();
   
+  // BudgetMind color as requested
   const budgetMindColor = "rgb(137 84 238)";
   
   return (
