@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { 
   BarChart2, 
@@ -16,7 +15,11 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export function Sidebar() {
+interface SidebarProps {
+  onSidebarStateChange?: (isOpen: boolean) => void;
+}
+
+export function Sidebar({ onSidebarStateChange }: SidebarProps) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -27,6 +30,17 @@ export function Sidebar() {
     // Close mobile menu when route changes
     setMobileOpen(false);
   }, [location.pathname]);
+
+  // Notify parent component about sidebar state changes
+  useEffect(() => {
+    if (onSidebarStateChange) {
+      if (isMobile) {
+        onSidebarStateChange(mobileOpen);
+      } else {
+        onSidebarStateChange(!collapsed);
+      }
+    }
+  }, [collapsed, mobileOpen, isMobile, onSidebarStateChange]);
 
   const navigationItems = [
     { name: 'Dashboard', path: '/', icon: <Home className="h-5 w-5" /> },
@@ -43,12 +57,20 @@ export function Sidebar() {
 
   // Mobile menu toggle
   const toggleMobileMenu = () => {
-    setMobileOpen(!mobileOpen);
+    const newState = !mobileOpen;
+    setMobileOpen(newState);
+    if (isMobile && onSidebarStateChange) {
+      onSidebarStateChange(newState);
+    }
   };
 
   // Desktop sidebar toggle
   const toggleSidebar = () => {
-    setCollapsed(!collapsed);
+    const newState = !collapsed;
+    setCollapsed(newState);
+    if (!isMobile && onSidebarStateChange) {
+      onSidebarStateChange(!newState);
+    }
   };
 
   return (
