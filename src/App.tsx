@@ -9,6 +9,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
+import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
@@ -38,12 +40,26 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const isMobile = useIsMobile();
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+
+  // Handle sidebar state changes based on mobile state
+  useEffect(() => {
+    setSidebarOpen(!isMobile);
+  }, [isMobile]);
+
   return (
     <FinanceProvider>
       <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Sidebar />
-        <div className="flex-1 ml-16 md:ml-64 transition-all duration-300">
-          <Header />
+        <Sidebar onSidebarStateChange={(isOpen) => setSidebarOpen(isOpen)} />
+        <div className={`flex-1 transition-all duration-300 ${
+          isMobile 
+            ? 'ml-0 pt-16' // Mobile view always has full width and padding for the header
+            : sidebarOpen 
+              ? 'ml-64' // Sidebar open on desktop
+              : 'ml-16' // Sidebar collapsed on desktop
+        }`}>
+          {!isMobile && <Header />}
           <main>{children}</main>
         </div>
       </div>
